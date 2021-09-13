@@ -8,7 +8,6 @@ import 'dart:async';
 
 import 'package:collection/collection.dart';
 import 'package:convert/convert.dart';
-import 'package:equatable/equatable.dart';
 import 'package:flutter/services.dart';
 import 'package:meta/meta.dart';
 import 'package:rxdart/rxdart.dart';

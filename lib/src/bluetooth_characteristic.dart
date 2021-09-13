@@ -4,14 +4,13 @@
 
 part of flutter_blue;
 
-class BluetoothCharacteristic extends Equatable {
+class BluetoothCharacteristic {
   final Guid uuid;
   final DeviceIdentifier deviceId;
   final Guid serviceUuid;
   final Guid? secondaryServiceUuid;
   final CharacteristicProperties properties;
   final List<BluetoothDescriptor> descriptors;
-
   bool get isNotifying {
     try {
       var cccd =
@@ -22,8 +21,7 @@ class BluetoothCharacteristic extends Equatable {
     }
   }
 
-  final BehaviorSubject<List<int>> _value;
-
+  BehaviorSubject<List<int>> _value;
   Stream<List<int>> get value => Rx.merge([
         _value.stream,
         _onValueChangedStream,
@@ -171,16 +169,6 @@ class BluetoothCharacteristic extends Equatable {
   }
 
   @override
-  List<Object?> get props => [
-        uuid,
-        deviceId,
-        descriptors,
-        serviceUuid,
-        properties,
-        secondaryServiceUuid,
-      ];
-
-  @override
   String toString() {
     return 'BluetoothCharacteristic{uuid: $uuid, deviceId: $deviceId, serviceUuid: $serviceUuid, secondaryServiceUuid: $secondaryServiceUuid, properties: $properties, descriptors: $descriptors, value: ${_value.value}';
   }
@@ -189,7 +177,7 @@ class BluetoothCharacteristic extends Equatable {
 enum CharacteristicWriteType { withResponse, withoutResponse }
 
 @immutable
-class CharacteristicProperties extends Equatable {
+class CharacteristicProperties {
   final bool broadcast;
   final bool read;
   final bool writeWithoutResponse;
@@ -201,18 +189,17 @@ class CharacteristicProperties extends Equatable {
   final bool notifyEncryptionRequired;
   final bool indicateEncryptionRequired;
 
-  CharacteristicProperties({
-    this.broadcast = false,
-    this.read = false,
-    this.writeWithoutResponse = false,
-    this.write = false,
-    this.notify = false,
-    this.indicate = false,
-    this.authenticatedSignedWrites = false,
-    this.extendedProperties = false,
-    this.notifyEncryptionRequired = false,
-    this.indicateEncryptionRequired = false,
-  });
+  CharacteristicProperties(
+      {this.broadcast = false,
+      this.read = false,
+      this.writeWithoutResponse = false,
+      this.write = false,
+      this.notify = false,
+      this.indicate = false,
+      this.authenticatedSignedWrites = false,
+      this.extendedProperties = false,
+      this.notifyEncryptionRequired = false,
+      this.indicateEncryptionRequired = false});
 
   CharacteristicProperties.fromProto(protos.CharacteristicProperties p)
       : broadcast = p.broadcast,
@@ -225,20 +212,6 @@ class CharacteristicProperties extends Equatable {
         extendedProperties = p.extendedProperties,
         notifyEncryptionRequired = p.notifyEncryptionRequired,
         indicateEncryptionRequired = p.indicateEncryptionRequired;
-
-  @override
-  List<Object?> get props => [
-        broadcast,
-        read,
-        writeWithoutResponse,
-        write,
-        notify,
-        indicate,
-        authenticatedSignedWrites,
-        extendedProperties,
-        notifyEncryptionRequired,
-        indicateEncryptionRequired,
-      ];
 
   @override
   String toString() {
