@@ -4,7 +4,7 @@
 
 part of flutter_blue;
 
-class BluetoothDevice {
+class BluetoothDevice extends Equatable {
   final DeviceIdentifier id;
   final String name;
   final BluetoothDeviceType type;
@@ -14,7 +14,7 @@ class BluetoothDevice {
         name = p.name,
         type = BluetoothDeviceType.values[p.type.value];
 
-  BehaviorSubject<bool> _isDiscoveringServices = BehaviorSubject.seeded(false);
+  final BehaviorSubject<bool> _isDiscoveringServices = BehaviorSubject.seeded(false);
   Stream<bool> get isDiscoveringServices => _isDiscoveringServices.stream;
 
   /// Establishes a connection to the Bluetooth Device.
@@ -48,7 +48,7 @@ class BluetoothDevice {
   Future disconnect() =>
       FlutterBlue.instance._channel.invokeMethod('disconnect', id.toString());
 
-  BehaviorSubject<List<BluetoothService>> _services =
+  final BehaviorSubject<List<BluetoothService>> _services =
       BehaviorSubject.seeded([]);
 
   /// Discovers services offered by the remote device as well as their characteristics and descriptors
@@ -136,7 +136,7 @@ class BluetoothDevice {
   Future<bool> get canSendWriteWithoutResponse =>
       new Future.error(new UnimplementedError());
 
-  @override
+ /* @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is BluetoothDevice &&
@@ -144,7 +144,10 @@ class BluetoothDevice {
           id == other.id;
 
   @override
-  int get hashCode => id.hashCode;
+  int get hashCode => id.hashCode | name.hashCode;*/
+
+  @override
+  List<Object?> get props => [id, name, type];
 
   @override
   String toString() {
