@@ -33,6 +33,7 @@ import com.pauldemarco.flutter_blue.Protos.AdvertisementData;
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
+import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 /**
@@ -73,11 +74,7 @@ class AdvertisementParser {
           }
           byte[] name = new byte[length];
           data.get(name);
-          try {
-            ret.setLocalName(new String(name, "UTF-8"));
-          } catch (UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
-          }
+          ret.setLocalName(new String(name, StandardCharsets.UTF_8));
           if (type == 0x09) {
             seenLongLocalName = true;
           }
