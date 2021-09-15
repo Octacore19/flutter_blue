@@ -7,8 +7,7 @@ part of flutter_blue;
 class FlutterBlue {
   final MethodChannel _channel = const MethodChannel('$NAMESPACE/methods');
   final EventChannel _stateChannel = const EventChannel('$NAMESPACE/state');
-  final StreamController<MethodCall> _methodStreamController =
-      new StreamController.broadcast(); // ignore: close_sinks
+  final StreamController<MethodCall> _methodStreamController = StreamController.broadcast();
   Stream<MethodCall> get _methodStream => _methodStreamController
       .stream; // Used internally to dispatch methods from platform.
 
@@ -29,8 +28,7 @@ class FlutterBlue {
   LogLevel get logLevel => _logLevel;
 
   /// Checks whether the device supports Bluetooth
-  Future<bool> get isAvailable =>
-      _channel.invokeMethod('isAvailable').then<bool>((d) => d);
+  Future<bool> get isAvailable => _channel.invokeMethod('isAvailable').then<bool>((d) => d);
 
   /// Checks if Bluetooth functionality is turned on
   Future<bool> get isOn => _channel.invokeMethod('isOn').then<bool>((d) => d);
@@ -195,6 +193,13 @@ class FlutterBlue {
     if (level.index <= _logLevel.index) {
       print(message);
     }
+  }
+
+  void dispose() {
+    _methodStreamController.close();
+    _isScanning.close();
+    _scanResults.close();
+    _stopScanPill.close();
   }
 }
 
