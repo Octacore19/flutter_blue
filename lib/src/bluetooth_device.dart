@@ -4,7 +4,7 @@
 
 part of flutter_blue;
 
-class BluetoothDevice extends Equatable {
+class BluetoothDevice {
   final DeviceIdentifier id;
   final String name;
   final BluetoothDeviceType type;
@@ -14,22 +14,7 @@ class BluetoothDevice extends Equatable {
         name = p.name,
         type = BluetoothDeviceType.values[p.type.value];
 
-  BluetoothDevice.fromJson(Map<String, dynamic> json)
-      : id = DeviceIdentifier.fromJson(json['id']),
-        name = json['name'],
-        type = BluetoothDeviceType.values[json['type']];
-
-  Map toJson() {
-    return {
-      'id': id.toJson(),
-      'name': name,
-      'type': type.index,
-    };
-  }
-
-  final BehaviorSubject<bool> _isDiscoveringServices =
-      BehaviorSubject.seeded(false);
-
+  BehaviorSubject<bool> _isDiscoveringServices = BehaviorSubject.seeded(false);
   Stream<bool> get isDiscoveringServices => _isDiscoveringServices.stream;
 
   /// Establishes a connection to the Bluetooth Device.
@@ -63,7 +48,7 @@ class BluetoothDevice extends Equatable {
   Future disconnect() =>
       FlutterBlue.instance._channel.invokeMethod('disconnect', id.toString());
 
-  final BehaviorSubject<List<BluetoothService>> _services =
+  BehaviorSubject<List<BluetoothService>> _services =
       BehaviorSubject.seeded([]);
 
   /// Discovers services offered by the remote device as well as their characteristics and descriptors
@@ -152,15 +137,19 @@ class BluetoothDevice extends Equatable {
       new Future.error(new UnimplementedError());
 
   @override
-  String toString() {
-    return 'BluetoothDevice{id: $id, '
-        'name: $name, type: $type, '
-        'isDiscoveringServices: ${_isDiscoveringServices.value}, '
-        '_services: ${_services.value}';
-  }
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is BluetoothDevice &&
+          runtimeType == other.runtimeType &&
+          id == other.id;
 
   @override
-  List<Object?> get props => [id, name, type];
+  int get hashCode => id.hashCode;
+
+  @override
+  String toString() {
+    return 'BluetoothDevice{id: $id, name: $name, type: $type, isDiscoveringServices: ${_isDiscoveringServices.value}, _services: ${_services.value}';
+  }
 }
 
 enum BluetoothDeviceType { unknown, classic, le, dual }

@@ -4,7 +4,7 @@
 
 part of flutter_blue;
 
-class BluetoothDescriptor extends Equatable {
+class BluetoothDescriptor {
   static final Guid cccd = new Guid("00002902-0000-1000-8000-00805f9b34fb");
 
   final Guid uuid;
@@ -12,8 +12,7 @@ class BluetoothDescriptor extends Equatable {
   final Guid serviceUuid;
   final Guid characteristicUuid;
 
-  final BehaviorSubject<List<int>> _value;
-
+  BehaviorSubject<List<int>> _value;
   Stream<List<int>> get value => _value.stream;
 
   List<int> get lastValue => _value.value;
@@ -85,18 +84,6 @@ class BluetoothDescriptor extends Equatable {
 
   @override
   String toString() {
-    return 'BluetoothDescriptor{uuid: $uuid, '
-        'deviceId: $deviceId, '
-        'serviceUuid: $serviceUuid, '
-        'characteristicUuid: $characteristicUuid, '
-        'value: ${_value.value}}';
+    return 'BluetoothDescriptor{uuid: $uuid, deviceId: $deviceId, serviceUuid: $serviceUuid, characteristicUuid: $characteristicUuid, value: ${_value.value}}';
   }
-
-  @override
-  List<Object?> get props => [
-        uuid,
-        deviceId,
-        serviceUuid,
-        characteristicUuid,
-      ];
 }

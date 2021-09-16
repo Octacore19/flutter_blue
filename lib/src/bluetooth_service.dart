@@ -4,7 +4,7 @@
 
 part of flutter_blue;
 
-class BluetoothService extends Equatable {
+class BluetoothService {
   final Guid uuid;
   final DeviceIdentifier deviceId;
   final bool isPrimary;
@@ -24,19 +24,6 @@ class BluetoothService extends Equatable {
 
   @override
   String toString() {
-    return 'BluetoothService{uuid: $uuid, '
-        'deviceId: $deviceId, '
-        'isPrimary: $isPrimary, '
-        'characteristics: $characteristics, '
-        'includedServices: $includedServices}';
+    return 'BluetoothService{uuid: $uuid, deviceId: $deviceId, isPrimary: $isPrimary, characteristics: $characteristics, includedServices: $includedServices}';
   }
-
-  @override
-  List<Object?> get props => [
-        uuid,
-        deviceId,
-        isPrimary,
-        characteristics,
-        includedServices,
-      ];
 }

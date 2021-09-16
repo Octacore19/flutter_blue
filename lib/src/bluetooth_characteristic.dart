@@ -4,24 +4,13 @@
 
 part of flutter_blue;
 
-class BluetoothCharacteristic extends Equatable {
+class BluetoothCharacteristic {
   final Guid uuid;
   final DeviceIdentifier deviceId;
   final Guid serviceUuid;
   final Guid? secondaryServiceUuid;
   final CharacteristicProperties properties;
   final List<BluetoothDescriptor> descriptors;
-
-  @override
-  List<Object?> get props => [
-        uuid,
-        deviceId,
-        serviceUuid,
-        secondaryServiceUuid,
-        properties,
-        descriptors,
-      ];
-
   bool get isNotifying {
     try {
       var cccd =
@@ -32,8 +21,7 @@ class BluetoothCharacteristic extends Equatable {
     }
   }
 
-  final BehaviorSubject<List<int>> _value;
-
+  BehaviorSubject<List<int>> _value;
   Stream<List<int>> get value => Rx.merge([
         _value.stream,
         _onValueChangedStream,
@@ -182,20 +170,14 @@ class BluetoothCharacteristic extends Equatable {
 
   @override
   String toString() {
-    return 'BluetoothCharacteristic{uuid: $uuid, '
-        'deviceId: $deviceId, '
-        'serviceUuid: $serviceUuid, '
-        'secondaryServiceUuid: $secondaryServiceUuid, '
-        'properties: $properties, '
-        'descriptors: $descriptors, '
-        'value: ${_value.value}';
+    return 'BluetoothCharacteristic{uuid: $uuid, deviceId: $deviceId, serviceUuid: $serviceUuid, secondaryServiceUuid: $secondaryServiceUuid, properties: $properties, descriptors: $descriptors, value: ${_value.value}';
   }
 }
 
 enum CharacteristicWriteType { withResponse, withoutResponse }
 
 @immutable
-class CharacteristicProperties extends Equatable {
+class CharacteristicProperties {
   final bool broadcast;
   final bool read;
   final bool writeWithoutResponse;
@@ -233,29 +215,6 @@ class CharacteristicProperties extends Equatable {
 
   @override
   String toString() {
-    return 'CharacteristicProperties{broadcast: $broadcast, '
-        'read: $read, '
-        'writeWithoutResponse: $writeWithoutResponse, '
-        'write: $write, '
-        'notify: $notify, '
-        'indicate: $indicate, '
-        'authenticatedSignedWrites: $authenticatedSignedWrites, '
-        'extendedProperties: $extendedProperties, '
-        'notifyEncryptionRequired: $notifyEncryptionRequired, '
-        'indicateEncryptionRequired: $indicateEncryptionRequired}';
+    return 'CharacteristicProperties{broadcast: $broadcast, read: $read, writeWithoutResponse: $writeWithoutResponse, write: $write, notify: $notify, indicate: $indicate, authenticatedSignedWrites: $authenticatedSignedWrites, extendedProperties: $extendedProperties, notifyEncryptionRequired: $notifyEncryptionRequired, indicateEncryptionRequired: $indicateEncryptionRequired}';
   }
-
-  @override
-  List<Object?> get props => [
-        broadcast,
-        read,
-        writeWithoutResponse,
-        write,
-        notify,
-        indicate,
-        authenticatedSignedWrites,
-        extendedProperties,
-        notifyEncryptionRequired,
-        indicateEncryptionRequired,
-      ];
 }

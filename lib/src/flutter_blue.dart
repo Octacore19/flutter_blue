@@ -7,9 +7,7 @@ part of flutter_blue;
 class FlutterBlue {
   final MethodChannel _channel = const MethodChannel('$NAMESPACE/methods');
   final EventChannel _stateChannel = const EventChannel('$NAMESPACE/state');
-  final StreamController<MethodCall> _methodStreamController =
-      StreamController.broadcast();
-
+  final StreamController<MethodCall> _methodStreamController = StreamController.broadcast();
   Stream<MethodCall> get _methodStream => _methodStreamController
       .stream; // Used internally to dispatch methods from platform.
 
@@ -23,23 +21,19 @@ class FlutterBlue {
   }
 
   static FlutterBlue _instance = new FlutterBlue._();
-
   static FlutterBlue get instance => _instance;
 
   /// Log level of the instance, default is all messages (debug).
   LogLevel _logLevel = LogLevel.debug;
-
   LogLevel get logLevel => _logLevel;
 
   /// Checks whether the device supports Bluetooth
-  Future<bool> get isAvailable =>
-      _channel.invokeMethod('isAvailable').then<bool>((d) => d);
+  Future<bool> get isAvailable => _channel.invokeMethod('isAvailable').then<bool>((d) => d);
 
   /// Checks if Bluetooth functionality is turned on
   Future<bool> get isOn => _channel.invokeMethod('isOn').then<bool>((d) => d);
 
   BehaviorSubject<bool> _isScanning = BehaviorSubject.seeded(false);
-
   Stream<bool> get isScanning => _isScanning.stream;
 
   BehaviorSubject<List<ScanResult>> _scanResults = BehaviorSubject.seeded([]);
@@ -203,12 +197,11 @@ class FlutterBlue {
     }
   }
 
-  void dispose() async {
+  void dispose() {
     _methodStreamController.close();
     _isScanning.close();
     _scanResults.close();
     _stopScanPill.close();
-    await _channel.invokeMethod('dispose');
   }
 }
 
@@ -237,7 +230,6 @@ enum BluetoothState {
 
 class ScanMode {
   const ScanMode(this.value);
-
   static const lowPower = const ScanMode(0);
   static const balanced = const ScanMode(1);
   static const lowLatency = const ScanMode(2);
@@ -245,27 +237,22 @@ class ScanMode {
   final int value;
 }
 
-class DeviceIdentifier extends Equatable {
+class DeviceIdentifier {
   final String id;
-
   const DeviceIdentifier(this.id);
 
   @override
   String toString() => id;
 
   @override
-  List<Object?> get props => [id];
+  int get hashCode => id.hashCode;
 
-  factory DeviceIdentifier.fromJson(Map<String, dynamic> json) {
-    return DeviceIdentifier(json['id']);
-  }
-
-  Map toJson() {
-    return {'id': id};
-  }
+  @override
+  bool operator ==(other) =>
+      other is DeviceIdentifier && compareAsciiLowerCase(id, other.id) == 0;
 }
 
-class ScanResult extends Equatable {
+class ScanResult {
   ScanResult.fromProto(protos.ScanResult p)
       : device = new BluetoothDevice.fromProto(p.device),
         advertisementData =
@@ -277,7 +264,14 @@ class ScanResult extends Equatable {
   final int rssi;
 
   @override
-  List<Object?> get props => [device, advertisementData, rssi];
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is ScanResult &&
+          runtimeType == other.runtimeType &&
+          device == other.device;
+
+  @override
+  int get hashCode => device.hashCode;
 
   @override
   String toString() {
@@ -285,7 +279,7 @@ class ScanResult extends Equatable {
   }
 }
 
-class AdvertisementData extends Equatable {
+class AdvertisementData {
   final String localName;
   final int? txPowerLevel;
   final bool connectable;
@@ -304,21 +298,6 @@ class AdvertisementData extends Equatable {
 
   @override
   String toString() {
-    return 'AdvertisementData{localName: $localName, '
-        'txPowerLevel: $txPowerLevel, '
-        'connectable: $connectable, '
-        'manufacturerData: $manufacturerData, '
-        'serviceData: $serviceData, '
-        'serviceUuids: $serviceUuids}';
+    return 'AdvertisementData{localName: $localName, txPowerLevel: $txPowerLevel, connectable: $connectable, manufacturerData: $manufacturerData, serviceData: $serviceData, serviceUuids: $serviceUuids}';
   }
-
-  @override
-  List<Object?> get props => [
-        localName,
-        txPowerLevel,
-        connectable,
-        manufacturerData,
-        serviceData,
-        serviceUuids,
-      ];
 }
