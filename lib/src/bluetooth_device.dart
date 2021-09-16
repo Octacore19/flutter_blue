@@ -4,7 +4,7 @@
 
 part of flutter_blue;
 
-class BluetoothDevice {
+class BluetoothDevice extends Equatable {
   final DeviceIdentifier id;
   final String name;
   final BluetoothDeviceType type;
@@ -14,7 +14,22 @@ class BluetoothDevice {
         name = p.name,
         type = BluetoothDeviceType.values[p.type.value];
 
-  BehaviorSubject<bool> _isDiscoveringServices = BehaviorSubject.seeded(false);
+  BluetoothDevice.fromJson(Map<String, dynamic> json)
+      : id = DeviceIdentifier.fromJson(json['id']),
+        name = json['name'],
+        type = BluetoothDeviceType.values[json['type']];
+
+  Map toJson() {
+    return {
+      'id': id.toJson(),
+      'name': name,
+      'type': type.index,
+    };
+  }
+
+  final BehaviorSubject<bool> _isDiscoveringServices =
+      BehaviorSubject.seeded(false);
+
   Stream<bool> get isDiscoveringServices => _isDiscoveringServices.stream;
 
   /// Establishes a connection to the Bluetooth Device.
@@ -48,7 +63,7 @@ class BluetoothDevice {
   Future disconnect() =>
       FlutterBlue.instance._channel.invokeMethod('disconnect', id.toString());
 
-  BehaviorSubject<List<BluetoothService>> _services =
+  final BehaviorSubject<List<BluetoothService>> _services =
       BehaviorSubject.seeded([]);
 
   /// Discovers services offered by the remote device as well as their characteristics and descriptors
@@ -137,19 +152,15 @@ class BluetoothDevice {
       new Future.error(new UnimplementedError());
 
   @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is BluetoothDevice &&
-          runtimeType == other.runtimeType &&
-          id == other.id;
-
-  @override
-  int get hashCode => id.hashCode;
-
-  @override
   String toString() {
-    return 'BluetoothDevice{id: $id, name: $name, type: $type, isDiscoveringServices: ${_isDiscoveringServices.value}, _services: ${_services.value}';
+    return 'BluetoothDevice{id: $id, '
+        'name: $name, type: $type, '
+        'isDiscoveringServices: ${_isDiscoveringServices.value}, '
+        '_services: ${_services.value}';
   }
+
+  @override
+  List<Object?> get props => [id, name, type];
 }
 
 enum BluetoothDeviceType { unknown, classic, le, dual }

@@ -4,9 +4,11 @@
 
 part of flutter_blue;
 
-class Guid {
+class Guid extends Equatable {
   final List<int> _bytes;
   final int _hashCode;
+
+
 
   Guid._internal(List<int> bytes)
       : _bytes = bytes,
@@ -85,7 +87,6 @@ class Guid {
     return _bytes;
   }
 
-  operator ==(other) => other is Guid && this.hashCode == other.hashCode;
-
-  int get hashCode => _hashCode;
+  @override
+  List<Object?> get props => [_bytes, _hashCode];
 }
