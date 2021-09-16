@@ -14,7 +14,16 @@ class BluetoothDevice {
         name = p.name,
         type = BluetoothDeviceType.values[p.type.value];
 
+  BluetoothDevice.fromValues({
+    String? id,
+    String? name,
+    BluetoothDeviceType? type,
+  })  : id = id != null ? DeviceIdentifier(id) : DeviceIdentifier(''),
+        name = name ?? '',
+        type = type ?? BluetoothDeviceType.unknown;
+
   BehaviorSubject<bool> _isDiscoveringServices = BehaviorSubject.seeded(false);
+
   Stream<bool> get isDiscoveringServices => _isDiscoveringServices.stream;
 
   /// Establishes a connection to the Bluetooth Device.
