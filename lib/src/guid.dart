@@ -18,7 +18,7 @@ class Guid {
 
   Guid.empty() : this._internal(new List.filled(16, 0));
 
-  static List<int> _fromMacString(String input) {
+  static List<int> _fromMacString(String? input) {
     if (input == null) {
       throw new ArgumentError("Input was null");
     }

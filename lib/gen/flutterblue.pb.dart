@@ -213,6 +213,7 @@ class ScanSettings extends $pb.GeneratedMessage {
     ..a<$core.int>(1, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'androidScanMode', $pb.PbFieldType.O3)
     ..pPS(2, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'serviceUuids')
     ..aOB(3, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'allowDuplicates')
+    ..aOS(4, const $core.bool.fromEnvironment('protobuf.omit_field_names') ? '' : 'deviceName')
     ..hasRequiredFields = false
   ;
 
@@ -221,6 +222,7 @@ class ScanSettings extends $pb.GeneratedMessage {
     $core.int? androidScanMode,
     $core.Iterable<$core.String>? serviceUuids,
     $core.bool? allowDuplicates,
+    $core.String? deviceName,
   }) {
     final _result = create();
     if (androidScanMode != null) {
@@ -231,6 +233,9 @@ class ScanSettings extends $pb.GeneratedMessage {
     }
     if (allowDuplicates != null) {
       _result.allowDuplicates = allowDuplicates;
+    }
+    if (deviceName != null) {
+      _result.deviceName = deviceName;
     }
     return _result;
   }
@@ -275,6 +280,15 @@ class ScanSettings extends $pb.GeneratedMessage {
   $core.bool hasAllowDuplicates() => $_has(2);
   @$pb.TagNumber(3)
   void clearAllowDuplicates() => clearField(3);
+
+  @$pb.TagNumber(4)
+  $core.String get deviceName => $_getSZ(3);
+  @$pb.TagNumber(4)
+  set deviceName($core.String v) { $_setString(3, v); }
+  @$pb.TagNumber(4)
+  $core.bool hasDeviceName() => $_has(3);
+  @$pb.TagNumber(4)
+  void clearDeviceName() => clearField(4);
 }
 
 class ScanResult extends $pb.GeneratedMessage {
