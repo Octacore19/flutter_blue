@@ -197,11 +197,16 @@ class FlutterBlue {
     }
   }
 
-  void dispose() {
+  void init() async {
+    await _channel.invokeMethod('init');
+  }
+
+  void dispose() async {
     _methodStreamController.close();
     _isScanning.close();
     _scanResults.close();
     _stopScanPill.close();
+    await _channel.invokeMethod('dispose');
   }
 }
 

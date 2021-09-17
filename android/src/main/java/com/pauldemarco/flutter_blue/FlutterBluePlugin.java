@@ -98,22 +98,16 @@ public class FlutterBluePlugin implements FlutterPlugin, ActivityAware, MethodCa
     @Override
     public void onDetachedFromEngine(@NonNull FlutterPluginBinding binding) {
         pluginBinding = null;
-
     }
 
     @Override
     public void onAttachedToActivity(@NonNull ActivityPluginBinding binding) {
         activityBinding = binding;
-        setup(
-                pluginBinding.getBinaryMessenger(),
-                (Application) pluginBinding.getApplicationContext(),
-                activityBinding.getActivity(),
-                activityBinding);
     }
 
     @Override
     public void onDetachedFromActivity() {
-        tearDown();
+//        tearDown();
     }
 
     @Override
@@ -173,6 +167,16 @@ public class FlutterBluePlugin implements FlutterPlugin, ActivityAware, MethodCa
                 result.success(null);
                 break;
             }
+
+            case "init":
+                setup(
+                        pluginBinding.getBinaryMessenger(),
+                        (Application) pluginBinding.getApplicationContext(),
+                        activityBinding.getActivity(),
+                        activityBinding
+                );
+                result.success(null);
+                break;
 
             case "dispose":
                 tearDown();

@@ -148,7 +148,7 @@ class BluetoothDevice extends Equatable {
   Future<bool> get canSendWriteWithoutResponse =>
       new Future.error(new UnimplementedError());
 
-  @override
+  /*@override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is BluetoothDevice &&
@@ -156,7 +156,7 @@ class BluetoothDevice extends Equatable {
           id == other.id;
 
   @override
-  int get hashCode => id.hashCode;
+  int get hashCode => id.hashCode;*/
 
   @override
   String toString() {
