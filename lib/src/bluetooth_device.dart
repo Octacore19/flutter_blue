@@ -168,7 +168,7 @@ class BluetoothDevice extends Equatable {
       BluetoothDevice.fromValues(
         id: json['id'],
         name: json['name'],
-        type: json['type'],
+        type: BluetoothDeviceType.values[json['type']],
       );
 
   Map toJson() => {
