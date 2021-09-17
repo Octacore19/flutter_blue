@@ -25,7 +25,8 @@ class BluetoothDevice extends Equatable {
         name = name ?? '',
         type = type ?? BluetoothDeviceType.unknown;
 
-  final BehaviorSubject<bool> _isDiscoveringServices = BehaviorSubject.seeded(false);
+  final BehaviorSubject<bool> _isDiscoveringServices =
+      BehaviorSubject.seeded(false);
 
   Stream<bool> get isDiscoveringServices => _isDiscoveringServices.stream;
 
@@ -162,6 +163,19 @@ class BluetoothDevice extends Equatable {
   String toString() {
     return 'BluetoothDevice{id: $id, name: $name, type: $type, isDiscoveringServices: ${_isDiscoveringServices.value}, _services: ${_services.value}';
   }
+
+  factory BluetoothDevice.fromJson(Map<String, dynamic> json) =>
+      BluetoothDevice.fromValues(
+        id: json['id'],
+        name: json['name'],
+        type: json['type'],
+      );
+
+  Map toJson() => {
+        'id': id.id,
+        'name': name,
+        'type': type.index,
+      };
 }
 
 enum BluetoothDeviceType { unknown, classic, le, dual }
