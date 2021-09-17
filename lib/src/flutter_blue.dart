@@ -228,16 +228,29 @@ enum BluetoothState {
   off
 }
 
-class ScanMode {
-  const ScanMode(this.value);
-  static const lowPower = const ScanMode(0);
-  static const balanced = const ScanMode(1);
-  static const lowLatency = const ScanMode(2);
-  static const opportunistic = const ScanMode(-1);
-  final int value;
+enum ScanMode {
+  lowPower,
+  balanced,
+  lowLatency,
+  opportunistic
 }
 
-class DeviceIdentifier {
+extension ScanModeExtension on ScanMode {
+  int get value {
+    switch(this) {
+      case ScanMode.lowPower:
+        return 0;
+      case ScanMode.balanced:
+        return 1;
+      case ScanMode.lowLatency:
+        return 2;
+      case ScanMode.opportunistic:
+        return -1;
+    }
+  }
+}
+
+class DeviceIdentifier extends Equatable {
   final String id;
   const DeviceIdentifier(this.id);
 
@@ -245,11 +258,14 @@ class DeviceIdentifier {
   String toString() => id;
 
   @override
+  List<Object?> get props => [id];
+
+  /*@override
   int get hashCode => id.hashCode;
 
   @override
   bool operator ==(other) =>
-      other is DeviceIdentifier && compareAsciiLowerCase(id, other.id) == 0;
+      other is DeviceIdentifier && compareAsciiLowerCase(id, other.id) == 0;*/
 }
 
 class ScanResult {

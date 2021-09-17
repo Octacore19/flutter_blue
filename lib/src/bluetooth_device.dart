@@ -4,10 +4,13 @@
 
 part of flutter_blue;
 
-class BluetoothDevice {
+class BluetoothDevice extends Equatable {
   final DeviceIdentifier id;
   final String name;
   final BluetoothDeviceType type;
+
+  @override
+  List<Object?> get props => [id, name, type];
 
   BluetoothDevice.fromProto(protos.BluetoothDevice p)
       : id = new DeviceIdentifier(p.remoteId),
@@ -22,7 +25,7 @@ class BluetoothDevice {
         name = name ?? '',
         type = type ?? BluetoothDeviceType.unknown;
 
-  BehaviorSubject<bool> _isDiscoveringServices = BehaviorSubject.seeded(false);
+  final BehaviorSubject<bool> _isDiscoveringServices = BehaviorSubject.seeded(false);
 
   Stream<bool> get isDiscoveringServices => _isDiscoveringServices.stream;
 
@@ -57,7 +60,7 @@ class BluetoothDevice {
   Future disconnect() =>
       FlutterBlue.instance._channel.invokeMethod('disconnect', id.toString());
 
-  BehaviorSubject<List<BluetoothService>> _services =
+  final BehaviorSubject<List<BluetoothService>> _services =
       BehaviorSubject.seeded([]);
 
   /// Discovers services offered by the remote device as well as their characteristics and descriptors
